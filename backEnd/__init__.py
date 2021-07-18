@@ -4,7 +4,7 @@ from flask import Flask as flsk
 def create_app():
 
     app = flsk('backEnd')
-    app.config.from_object("config.developmentConfig")
+    app.config.from_object(f"config.{app.config['ENV']}Config")
 
     from . import notes
     app.register_blueprint(notes.notes)
