@@ -6,8 +6,9 @@ drop table if exists tags;
 
 create table users(
     id serial primary key,
-    Username text not null unique,
-    passwrd text
+    username text not null unique,
+    name text,
+    password text not null
 );
 
 create table notes(
@@ -23,6 +24,7 @@ create table tags(
 );
 
 create table noteTags(
+    id serial primary key,
     usr serial references users(id),
     tag serial references tags(id) 
 );

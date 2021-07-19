@@ -2,6 +2,7 @@ import psycopg2
 import click 
 from flask import current_app, g
 from flask.cli import with_appcontext
+from werkzeug.security import generate_password_hash, check_password_hash
 
 def getDb():
     if 'db' not in g:
@@ -16,6 +17,45 @@ def closeDb(e=None):
 
     if db is not None:
         db.close()
+
+def uniqueId(id):
+    db = getDb()
+    cur = db.cursor()
+    cur.execute("select username from users where username = %s",(id,))
+
+    if(cur.fetchone() == None):
+        return True
+    
+    else:
+        return False
+
+def insert(d):
+    userId = d.get('userName')
+    name = d.get('firstName')
+    password = d.get('password1')
+    hashedPass = generate_password_hash(password, method='sha256')
+
+    db = getDb()
+    cur = db.cursor()
+
+    cur.execute("INSERT INTO users (username, name, password) VALUES (%s,%s,%s) ", (userId, name, hashedPass[7:]))
+    db.commit()
+
+def logIn(userId):
+    db = getDb()
+    cur = db.cursor()
+
+    cur.execute("SELECT * FROM users where username = %s",(userId,))
+    usr = cur.fetchone()
+
+    if not usr or len(usr) == 0:
+        print('hi')
+        return None
+
+    else:
+        return usr
+    
+
 
 def initDb():
     db = getDb()
