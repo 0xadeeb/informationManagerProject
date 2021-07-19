@@ -72,7 +72,7 @@ def login():
 
             login_user(user, remember=remMe)
 
-            return redirect(url_for('notes.homePage'))
+            return redirect(url_for('notes.home'))
             
 
         else :
