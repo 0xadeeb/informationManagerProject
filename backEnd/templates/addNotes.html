@@ -1,0 +1,46 @@
+{% extends "index.html" %} {% block title %}Add notes{% endblock %} {% block
+content%}
+<form method="POST">
+  <textarea
+    name="title"
+    style="font-size: 19pt"
+    rows="1"
+    id="title"
+    class="form-control"
+    placeholder="Title"
+  ></textarea>
+  <br />
+  <textarea
+    name="note"
+    rows="15"
+    id="note"
+    class="form-control"
+    placeholder="Well, Go on..."
+  ></textarea>
+  <br />
+
+  <div class="checkbox">
+    <input type="checkbox" value="sports" id="sports" name="sports" />
+    <label for="sports"><b>Sports</b></label>
+  </div>
+
+  <div class="checkbox">
+    <input
+      type="checkbox"
+      value="Technology"
+      id="Technology"
+      name="Technology"
+    />
+    <label for="Technology"><b>Technology</b></label>
+  </div>
+
+  <div class="checkbox">
+    <input type="checkbox" value="Finance" id="Finance" name="Finance" />
+    <label for="Finance"><b>Finance</b></label>
+  </div>
+
+  <div align="center">
+    <button type="submit" class="btn btn-primary">Add Note</button>
+  </div>
+</form>
+{% endblock %}

@@ -32,9 +32,9 @@ def insertToDb(d):
         flash('Password should be atleast 6 characters!',category='error')
 
     elif db.uniqueId(d.get('userName')):
-        db.insert(d)
+        db.insert(d, 1, None)
         flash('Created a new account.',category='success')
-        return render_template('login.html')
+        return render_template('login.html', user = current_user)
 
     else:
         flash('Sorry User Name not available, Pick a new User Name.',category='error')
@@ -72,23 +72,23 @@ def login():
 
             login_user(user, remember=remMe)
 
-            return "<h2>Logged in</h2>"
+            return redirect(url_for('notes.homePage'))
             
 
         else :
              flash('Incorrect Username or password', category='error')
 
 
-    return render_template('login.html')
+    return render_template('login.html', user = current_user)
 
 
 @auth.route('/signup', methods = ['GET','POST'])
 def signup():
     if request.method == 'POST':
         if insertToDb(request.form):
-            return render_template('login.html')
+            return redirect(url_for('auth.login'))
 
-    return render_template('signUp.html')
+    return render_template('signUp.html', user = current_user)
 
 
 @auth.route('/logout')

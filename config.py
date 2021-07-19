@@ -4,6 +4,7 @@ class Config(object):
     SECRET_KEY = '(:guessTheKey:)'
 
     DB_NAME = "userNotes"
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     SESSION_COOKIE_SECURE = True
     SQLALCHEMY_DATABASE_URI = 'postgresql://adeeb:test123@localhost/userNotes'

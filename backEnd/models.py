@@ -1,4 +1,3 @@
-from sqlalchemy.sql.expression import null
 from .__init__ import dbase
 from flask_login import UserMixin
 from sqlalchemy.sql import func

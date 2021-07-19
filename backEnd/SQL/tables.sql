@@ -1,6 +1,6 @@
-drop table if exists noteTags;
-drop table if exists users;
+drop table if exists notetags;
 drop table if exists notes;
+drop table if exists users;
 drop table if exists tags;
 
 
@@ -13,9 +13,11 @@ create table users(
 
 create table notes(
     id serial primary key,
+    title text,
     note text,
     addedOn timestamp,
-    stared boolean
+    stared boolean,
+    usr serial references users(id) 
 );
 
 create table tags(
@@ -23,8 +25,8 @@ create table tags(
     tag text
 );
 
-create table noteTags(
+create table notetags(
     id serial primary key,
-    usr serial references users(id),
+    note serial references notes(id),
     tag serial references tags(id) 
 );
