@@ -19,7 +19,9 @@ def closeDb(e=None):
     if db is not None:
         db.close()
 
+
 def uniqueId(id):
+    
     db = getDb()
     cur = db.cursor()
     cur.execute("select username from users where username = %s",(id,))
@@ -31,8 +33,10 @@ def uniqueId(id):
         return False
 
 def insert(d, opt, user):
+    
     db = getDb()
     cur = db.cursor()
+
     if opt == 1:
         userId = d.get('userName')
         name = d.get('firstName')
@@ -67,9 +71,35 @@ def insert(d, opt, user):
 
         db.commit()   
         
+def allNotes(id):
 
+    db = getDb()
+    cur = db.cursor()
+
+    cur.execute("SELECT ROW_NUMBER() OVER (ORDER BY n.Id) AS Sno, n.id, n.title, n.stared FROM notes n, users u WHERE n.usr = %s AND u.id = %s", (id,id))
+
+    return cur.fetchall()
+
+def getContents(id):
+
+    db = getDb()
+    cur = db.cursor()
+
+    d = {}
+    cur.execute("SELECT title, note, addedon, stared, id FROM notes WHERE id = %s", (id,))
+    d['note'] = cur.fetchone()
+    cur.execute("SELECT t.tag FROM tags t, notes n, notetags nt WHERE n.id = %s AND n.id = nt.note AND t.id = nt.tag", (id,))
+    d['tags'] = cur.fetchall()
+    return d
+
+def updateNote(newNote, id):
+    db = getDb()
+    cur = db.cursor()
+    cur.execute("UPDATE notes SET note = %s, addedOn = %s WHERE id = %s", (newNote, datetime.datetime.now(), id))
+    db.commit()
 
 def logIn(userId):
+
     db = getDb()
     cur = db.cursor()
 
@@ -77,20 +107,18 @@ def logIn(userId):
     usr = cur.fetchone()
 
     if not usr or len(usr) == 0:
-        print('hi')
         return None
 
     else:
         return usr
-    
 
 
 def initDb():
-    db = getDb()
 
+    db = getDb()
+    cur = db.cursor()
     f = current_app.open_resource("SQL/tables.sql")
     sqlCode = f.read().decode("utf-8")
-    cur = db.cursor()
     cur.execute(sqlCode)
     cur.close()
     db.commit()

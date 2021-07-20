@@ -30,6 +30,4 @@ def create_app():
     def load_user(id):
         return models.users.query.get(int(id))
 
-
-
     return app

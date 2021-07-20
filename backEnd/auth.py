@@ -34,7 +34,7 @@ def insertToDb(d):
     elif db.uniqueId(d.get('userName')):
         db.insert(d, 1, None)
         flash('Created a new account.',category='success')
-        return render_template('login.html', user = current_user)
+        return redirect(url_for('auth.login'))
 
     else:
         flash('Sorry User Name not available, Pick a new User Name.',category='error')

@@ -1,16 +1,27 @@
 {% extends "index.html" %} {% block title %}Add notes{% endblock %} {% block
 content%} <br />
 <br />
-<a href="/add-note" class="btn btn-info">Add Note</a>
+<div align="center">
+  <a href="/add-note" class="btn btn-info">Add Note</a>
+</div>
+<br />
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Title</th>
+      <th>Stared</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for Sno, id, title, stared in notes%}
+    <tr>
+      <td><a href="{{url_for('notes.content', nid=id)}}">{{Sno}} </a></td>
+      <td>{{title}}</td>
+      <td>{{stared}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
-<ul class="list-group list-group-flush" id="notes">
-  {% for note in user.notes %}
-  <li class="list-group-item">
-    {{ note.data }}
-    <button type="button" class="close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </li>
-  {% endfor %}
-</ul>
 {% endblock %}
