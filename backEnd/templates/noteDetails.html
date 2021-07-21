@@ -1,32 +1,32 @@
 {% extends "index.html" %} {% block title %}Edit note{% endblock %} {% block
 content%}
 
-<h2 class="display-4">{{title}}</h2 >
-<p>
-  <h6>Last Modified on: {{addedOn}}
-  </h6>
-  <div class="m2">
+<h2 class="display-4">{{title}}</h2>
+<h6>Last Modified on: {{addedOn}}</h6>
+<div class="m2">
   {%for tag in tags%}
-    <span class="badge rounded-pill bg-success">{{tag[0]}}</span> 
+  <a
+    class="tag"
+    href="{{url_for('notes.tagSearch', field='tag', value=tag)}} "
+    style="color: white"
+    ><span class="badge bg-secondary larger-badge">#{{tag[0]}}</span>
+  </a>
   {%endfor%}
-    </div>
-    <br/>
-<form action="{{url_for('notes.content', nid=id)}}" method="POST">
-  <div class="mb-3">
-    <label for = "notes" class="form-label"></label>
-    <textarea rows="10" id="notes" class="form-control" cols="15" name="notes">{%if notes%}{{notes}}{%endif%}</textarea>
-  </div>
+</div>
+<br />
 
-  <div class="mb-3">
-    <button type="submit" class="btn btn-primary">Save</button>
-    &emsp;
-    <a href="/" class="btn btn-info">Home</a>
-    &emsp;
-    <button type="submit" class="btn btn-danger">Delete</button>
-  </div>
+<br />
+<p>{{notes}}</p>
+<br />
 
-</form>
+<p>
+  <a
+    class="btn btn-primary"
+    href="{{url_for('notes.edit', nid=id)}} "
+    style="color: white"
+  >
+    Edit
+  </a>
 </p>
-
 
 {% endblock %}

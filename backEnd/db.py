@@ -80,6 +80,13 @@ def allNotes(id):
 
     return cur.fetchall()
 
+def filterbyTag(tag, id):
+    db = getDb()
+    cur = db.cursor()
+
+    cur.execute("SELECT ROW_NUMBER() OVER (ORDER BY n.Id) AS Sno, n.id, n.title, n.stared FROM notes n, users u, tags t, notetags nt WHERE n.usr = %s AND u.id = n.usr AND t.tag = %s AND t.id = nt.tag AND n.id = nt.note", (id, tag))
+    return cur.fetchall()
+
 def getContents(id):
 
     db = getDb()
@@ -92,10 +99,10 @@ def getContents(id):
     d['tags'] = cur.fetchall()
     return d
 
-def updateNote(newNote, id):
+def updateNote(newTitle, newNote, star, id):
     db = getDb()
     cur = db.cursor()
-    cur.execute("UPDATE notes SET note = %s, addedOn = %s WHERE id = %s", (newNote, datetime.datetime.now(), id))
+    cur.execute("UPDATE notes SET title = %s, note = %s, addedOn = %s, stared = %s WHERE id = %s", (newTitle, newNote, datetime.datetime.now(), star, id))
     db.commit()
 
 def logIn(userId):

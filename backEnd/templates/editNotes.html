@@ -1,0 +1,40 @@
+{% extends "index.html" %} {% block title %}Edit note{% endblock %} {% block
+content%}
+<form action="{{url_for('notes.edit', nid=id)}}" method="POST">
+  <div class="mb-3">
+    <label for="title" class="form-label"></label>
+    <textarea
+      rows="1"
+      id="titile"
+      class="form-control"
+      name="title"
+      style="font-size: 25px"
+    >
+{{title}}</textarea
+    >
+  </div>
+  <div class="mb-3">
+    <label for="notes" class="form-label"></label>
+    <textarea rows="10" id="notes" class="form-control" cols="15" name="notes">
+{%if notes%}{{notes}}{%endif%}</textarea
+    >
+  </div>
+  <div class="checkbox m-2">
+    {% if stared %}
+    <input type="checkbox" value="Star" id="Star" name="Star" checked />
+    <label for="Star"><b>Star</b></label>
+    {% else %}
+    <input type="checkbox" value="Star" id="Star" name="Star" />
+    <label for="Star"><b>Star</b></label>
+    {%endif%}
+  </div>
+  <span class="mb-3">
+    <button type="update" class="btn btn-primary">Save</button>
+    &emsp;
+  </span>
+  <button type="delete" class="btn btn-danger" onclick="preventDefault()">
+    Delete
+  </button>
+</form>
+
+{%endblock%}

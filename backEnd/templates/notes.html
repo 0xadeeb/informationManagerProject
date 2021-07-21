@@ -10,7 +10,7 @@ content%} <br />
     <tr>
       <th>#</th>
       <th>Title</th>
-      <th>Stared</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -18,7 +18,13 @@ content%} <br />
     <tr>
       <td><a href="{{url_for('notes.content', nid=id)}}">{{Sno}} </a></td>
       <td>{{title}}</td>
-      <td>{{stared}}</td>
+      <td>
+        {% if stared %}
+        <span class="fa fa-star checked m-2"></span>
+        {% else %}
+        <span class="fa fa-star m-2"></span>
+        {%endif%}
+      </td>
     </tr>
     {% endfor %}
   </tbody>
