@@ -119,14 +119,17 @@ def logIn(userId):
     else:
         return usr
 
-def delete(id, opt):
+def delete(id, uid, opt):
     db = getDb()
     cur = db.cursor()
     if opt == 1:
-
-        cur.execute("DELETE FROM notetags WHERE note = %s", id)
-        cur.execute("DELETE FROM notes WHERE id = %s", id)
-        db.commit()
+        cur.execute("SELECT n.id FROM notes n, users u WHERE n.usr = u.id AND u.id = %s AND n.id = %s", (uid, id))
+        nid = cur.fetchone()
+        if nid:
+            cur.execute("DELETE FROM notetags WHERE note = %s", nid)
+            cur.execute("DELETE FROM notes WHERE id = %s", nid)
+            db.commit()
+            pass
 
 
 

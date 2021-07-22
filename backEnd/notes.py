@@ -100,5 +100,5 @@ def addNote():
 @notes.route('<nid>/delete-note')
 @login_required
 def deleteNote(nid):
-    db.delete(nid, 1)
+    db.delete(nid, current_user.id, 1)
     return redirect(url_for('notes.home'))
