@@ -96,3 +96,9 @@ def addNote():
         return redirect(url_for('notes.home'))
         
     return render_template('addNotes.html', user = current_user)
+
+@notes.route('<nid>/delete-note')
+@login_required
+def deleteNote(nid):
+    db.delete(nid, 1)
+    return redirect(url_for('notes.home'))
