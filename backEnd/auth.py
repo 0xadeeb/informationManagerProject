@@ -1,10 +1,11 @@
-from flask import Blueprint, render_template, request, flash
+from flask import Blueprint, render_template, request, flash, jsonify
 from flask.helpers import url_for
 from werkzeug.security import check_password_hash
 from flask_login import login_user, login_required, LoginManager, logout_user, current_user
 from werkzeug.utils import redirect
 from . import db
 from .models import users
+import json
 
 auth = Blueprint('auth', 'backEnd', url_prefix= '/')
 
@@ -41,27 +42,50 @@ def insertToDb(d):
 
     return None
 
+@auth.route('/is-autherised', methods = ['GET','POST'])
+def isLoggedin():
+
+    data = json.loads(request.data)
+    id = data['id']
+    print(id,current_user)
+    if current_user.is_authenticated:
+        return jsonify(dict(autherised = (current_user.id == int(id))))
+    else:
+        return jsonify(dict(autherised = False))
+    
 
 @auth.route('/login', methods = ['GET','POST'])
 def login():
     if(request.method == 'POST'):
+        print('hi')
+        print(request.accept_mimetypes.best)
 
-        if 'Rm' in request.form.getlist('rememberMe'):
+        if (request.accept_mimetypes.best == "*/*"):
+            data = json.loads(request.data)
+            userId = data['id']
+            pswrd = data['pass']
+            rm = []
+        else:
+            userId = request.form.get('userName')
+            pswrd = request.form.get('password')
+            rm = request.form.getlist('rememberMe')
+
+        if 'Rm' in rm:
             remMe = True
             
         else:
             remMe = False
             
-        userId = request.form.get('userName')
         t = db.logIn(userId)
         if t:
             hashedPass = 'sha256$'+t[3] 
 
-        print(t)
         if t == None:
-             flash('Incorrect Username', category='error')
+            if (request.accept_mimetypes.best == "*/*"):
+                return jsonify(dict(logn = False))
+            flash('Incorrect Username', category='error')
             
-        elif check_password_hash(hashedPass, request.form.get('password')):
+        elif check_password_hash(hashedPass, pswrd):
             flash('Logged in successfully!', category='success')
             
             user = users()
@@ -69,17 +93,22 @@ def login():
             user.username = t[1]
             user.name = t[2]
             user.password = t[3]
+            print(t)
 
             login_user(user, remember=remMe)
 
-            return redirect(url_for('notes.home'))
+            if (request.accept_mimetypes.best == "*/*"):
+                return jsonify(dict(logn = True))
+            else:
+                return redirect(url_for('notes.home'))
             
+        else:
+            if (request.accept_mimetypes.best == "*/*"):
+                return jsonify(dict(logn = False))
+            flash('Incorrect Username or password', category='error')
 
-        else :
-             flash('Incorrect Username or password', category='error')
-
-
-    return render_template('login.html', user = current_user)
+    else:
+        return render_template('login.html', user = current_user)
 
 
 @auth.route('/signup', methods = ['GET','POST'])

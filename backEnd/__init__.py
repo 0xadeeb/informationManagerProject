@@ -3,6 +3,7 @@ import flask_login
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from . import models
+from flask_cors import CORS
 
 dbase = SQLAlchemy()
     
@@ -12,6 +13,7 @@ def create_app():
     app = flsk('backEnd')
     app.config.from_object(f"config.{app.config['ENV']}Config")
     dbase.init_app(app)
+    CORS(app)
 
     from . import notes
     app.register_blueprint(notes.notes)
