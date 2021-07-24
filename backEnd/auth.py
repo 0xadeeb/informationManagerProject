@@ -9,7 +9,21 @@ import json
 
 auth = Blueprint('auth', 'backEnd', url_prefix= '/')
 
-def insertToDb(d):
+def insertToDb(r):
+
+    if r.accept_mimetypes.best == "*/*":
+        d = json.loads(r.data)
+        userName = d['userName']
+
+        if db.uniqueId(userName):
+            db.insert(d, 1, None)
+            return jsonify(dict(success = True, error = None))
+        else:
+            return jsonify(dict(success = False, error = "Sorry User Name not available, Pick a new User Name"))
+
+
+    else:
+        d = r.form
     
     if d == None:
         flash('Sorry some error has occured, try again. ',category='error')
@@ -114,8 +128,9 @@ def login():
 @auth.route('/signup', methods = ['GET','POST'])
 def signup():
     if request.method == 'POST':
-        if insertToDb(request.form):
-            return redirect(url_for('auth.login'))
+        d = insertToDb(request)
+        if d:
+            return d
 
     return render_template('signUp.html', user = current_user)
 

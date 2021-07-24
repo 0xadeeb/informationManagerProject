@@ -20,7 +20,7 @@ function Login() {
     setPassword(event.target.value);
   }
 
-  function handleSubmit(e) {
+  let handleSubmit = async (e) => {
     e.preventDefault();
 
     console.log(userName, pswrd);
@@ -29,7 +29,7 @@ function Login() {
       pass: pswrd,
     };
 
-    fetch(`${process.env.REACT_APP_API_SERVER}/login`, {
+    await fetch(`${process.env.REACT_APP_API_SERVER}/login`, {
       headers: new Headers({ Accepts: "application/json" }),
       method: "POST",
       body: JSON.stringify(data),
@@ -37,7 +37,7 @@ function Login() {
       .then((resp) => resp.json())
       .then((resp) => console.log(resp))
       .catch((e) => console.log(e));
-  }
+  };
 
   return (
     <div className="customBG">

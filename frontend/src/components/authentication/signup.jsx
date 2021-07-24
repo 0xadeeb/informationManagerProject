@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
+import UserData from "../../stores/userData";
 import Password from "../text-area/password";
 import SmallTextBox from "../text-area/smallTextBox";
 
@@ -27,7 +28,60 @@ function SignUp() {
     setPassword2(event.target.value);
   }
 
-  function handleSubmit(event) {}
+  let handleSubmit = async (event) => {
+    event.preventDefault();
+
+    console.log(firstname);
+    console.log(userName);
+
+    if (userName.length === 0) {
+      alert("Enter a user name!");
+      return;
+    }
+
+    if (firstname.length === 0) {
+      alert("Enter your name!");
+      return;
+    }
+
+    if (password1.length === 0) {
+      alert("Enter a password!");
+      return;
+    }
+
+    if (password2.length === 0) {
+      alert("Confirm your password!");
+      return;
+    }
+
+    if (password1.length < 6) {
+      alert("Password too short\nShould be minimun 6 characters");
+      return;
+    }
+
+    if (password1 !== password2) {
+      alert("Password didn't match.");
+      return;
+    }
+
+    const data = {
+      userName: userName,
+      firstName: firstname,
+      password1: password1,
+    };
+
+    await fetch(`${process.env.REACT_APP_API_SERVER}/signup`, {
+      headers: new Headers({ Accepts: "application/json" }),
+      method: "POST",
+      body: JSON.stringify(data),
+    })
+      .then((resp) => resp.json())
+      .then((resp) => {
+        if (resp.error) alert(resp.error);
+        else alert("New account created.");
+      })
+      .catch((e) => console.log(e));
+  };
 
   return (
     <div className="customBG">
@@ -63,13 +117,7 @@ function SignUp() {
               value={password2}
             />
             <br />
-            <button
-              onClick={() => {
-                histroy.push("/log-in");
-              }}
-              type="submit"
-              className="btn btn-primary"
-            >
+            <button type="submit" className="btn btn-primary">
               Sign Up
             </button>
           </form>
