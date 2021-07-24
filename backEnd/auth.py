@@ -6,6 +6,9 @@ from werkzeug.utils import redirect
 from . import db
 from .models import users
 import json
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
 
 auth = Blueprint('auth', 'backEnd', url_prefix= '/')
 
@@ -76,7 +79,7 @@ def login():
 
         if (request.accept_mimetypes.best == "*/*"):
             data = json.loads(request.data)
-            userId = data['id']
+            userId = data['userName']
             pswrd = data['pass']
             rm = []
         else:
@@ -96,7 +99,7 @@ def login():
 
         if t == None:
             if (request.accept_mimetypes.best == "*/*"):
-                return jsonify(dict(logn = False))
+                return jsonify(dict(msg = 'Invalid username!'))
             flash('Incorrect Username', category='error')
             
         elif check_password_hash(hashedPass, pswrd):
@@ -112,14 +115,16 @@ def login():
             login_user(user, remember=remMe)
 
             if (request.accept_mimetypes.best == "*/*"):
-                return jsonify(dict(logn = True))
+                access_token = create_access_token(userId)
+                return jsonify(dict(msg = 'Successfully logged in!', accessToken = access_token, userId = t[0]))
             else:
                 return redirect(url_for('notes.home'))
             
         else:
             if (request.accept_mimetypes.best == "*/*"):
-                return jsonify(dict(logn = False))
+                return jsonify(dict(msg = 'Invalid Username or password'))
             flash('Incorrect Username or password', category='error')
+        return render_template('login.html', user = current_user)
 
     else:
         return render_template('login.html', user = current_user)

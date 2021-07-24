@@ -3,6 +3,7 @@ import { useHistory } from "react-router";
 import Password from "../text-area/password";
 import SmallTextBox from "../text-area/smallTextBox";
 import CheckBox from "../buttons/checkBox";
+import { useToken } from "../../stores/context";
 import "../../App.css";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
 
@@ -11,6 +12,11 @@ function Login() {
 
   const [userName, setUserName] = useState("");
   const [pswrd, setPassword] = useState("");
+  const [token, setToken] = useToken();
+
+  if (token && token != undefined && token.length >= 10) {
+    histroy.push("/");
+  }
 
   function updateUserName(event) {
     setUserName(event.target.value);
@@ -25,7 +31,7 @@ function Login() {
 
     console.log(userName, pswrd);
     let data = {
-      id: userName,
+      userName: userName,
       pass: pswrd,
     };
 
@@ -35,11 +41,23 @@ function Login() {
       body: JSON.stringify(data),
     })
       .then((resp) => resp.json())
-      .then((resp) => console.log(resp))
+      .then((resp) => {
+        console.log(resp);
+        // alert(resp.msg);
+        if (resp.accessToken) {
+          sessionStorage.setItem("token", resp.accessToken);
+          setToken(resp.accessToken);
+          histroy.push("/");
+        }
+      })
       .catch((e) => console.log(e));
   };
 
-  return (
+  return token && token != undefined && token.length >= 10 ? (
+    <div>
+      <h2>You are logged in</h2>
+    </div>
+  ) : (
     <div className="customBG">
       <br />
       <br />

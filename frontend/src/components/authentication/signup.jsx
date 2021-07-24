@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-import UserData from "../../stores/userData";
+import UserData from "../../stores/context";
 import Password from "../text-area/password";
 import SmallTextBox from "../text-area/smallTextBox";
 
