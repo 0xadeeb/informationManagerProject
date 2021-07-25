@@ -6,37 +6,33 @@ import Home from "./components/home/noteList";
 import Login from "./components/authentication/login";
 import Signup from "./components/authentication/signup";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { TokenProvider } from "./stores/context";
+import { useToken } from "./stores/context";
 
 function App() {
-  const [resp, setResp] = useState(true);
+  const [token, setToken] = useToken();
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_SERVER}/is-autherised`, {
-      headers: new Headers({ Accepts: "application/json" }),
-      method: "POST",
-      body: JSON.stringify({ id: 1 }),
-    })
-      .then((res) => res.json())
-      .then((auth) => setResp(auth.autherised))
-      .catch((err) => {
-        console.log(err);
-      });
+    let t = sessionStorage.getItem("token");
+    if (t && t != undefined && t != "") setToken(t);
   }, []);
 
+  function lgout(e) {
+    e.preventDefault();
+    sessionStorage.removeItem("token");
+    setToken(null);
+  }
+
   return (
-    <TokenProvider>
-      <Router>
-        <div className="home">
-          <Navbar />
-          <Switch>
-            <Route path="/" exact component={Home} />
-            <Route path="/log-in" exact component={Login} />
-            <Route path="/sign-up" exact component={Signup} />
-          </Switch>
-        </div>
-      </Router>
-    </TokenProvider>
+    <Router>
+      <div className="home">
+        <Navbar callback={(e) => lgout(e)} />
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/log-in" exact component={Login} />
+          <Route path="/sign-up" exact component={Signup} />
+        </Switch>
+      </div>
+    </Router>
   );
 }
 

@@ -15,7 +15,7 @@ function Login() {
   const [token, setToken] = useToken();
 
   if (token && token != undefined && token.length >= 10) {
-    histroy.push("/");
+    window.localStorage.href = "/";
   }
 
   function updateUserName(event) {

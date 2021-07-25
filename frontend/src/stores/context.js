@@ -8,7 +8,7 @@ export function useToken() {
 }
 
 export function TokenProvider(props) {
-  const [token, setToken] = useState("hello");
+  const [token, setToken] = useState(null);
 
   return (
     <TokenContext.Provider value={token}>

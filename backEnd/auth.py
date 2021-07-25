@@ -64,7 +64,6 @@ def isLoggedin():
 
     data = json.loads(request.data)
     id = data['id']
-    print(id,current_user)
     if current_user.is_authenticated:
         return jsonify(dict(autherised = (current_user.id == int(id))))
     else:
@@ -110,12 +109,11 @@ def login():
             user.username = t[1]
             user.name = t[2]
             user.password = t[3]
-            print(t)
 
             login_user(user, remember=remMe)
 
             if (request.accept_mimetypes.best == "*/*"):
-                access_token = create_access_token(userId)
+                access_token = create_access_token(user.id)
                 return jsonify(dict(msg = 'Successfully logged in!', accessToken = access_token, userId = t[0]))
             else:
                 return redirect(url_for('notes.home'))

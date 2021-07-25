@@ -1,6 +1,9 @@
 import "../../node_modules/bootstrap/dist/css/bootstrap.css";
 import { Link } from "react-router-dom";
-function Navbar() {
+import { useToken } from "../stores/context";
+
+function Navbar(props) {
+  const [token, setToken] = useToken();
   return (
     <div className="App">
       <nav className="navbar navbar-expand navbar-dark bg-dark">
@@ -14,18 +17,29 @@ function Navbar() {
         </button>
         <div className="collapse navbar-collapse" id="navbar">
           <div className="navbar-nav">
-            <Link className="nav-item nav-link" id="home" to="/">
-              Home
-            </Link>
-            <Link className="nav-item nav-link" id="logout" to="/logout">
-              Logout
-            </Link>
-            <Link className="nav-item nav-link" id="login" to="/log-in">
-              Login
-            </Link>
-            <Link className="nav-item nav-link" id="signUp" to="/sign-up">
-              Sign Up
-            </Link>
+            {!token ? (
+              <Link className="nav-item nav-link" id="login" to="/log-in">
+                Login
+              </Link>
+            ) : (
+              <Link className="nav-item nav-link" id="home" to="/">
+                Home
+              </Link>
+            )}
+
+            {!token ? (
+              <Link className="nav-item nav-link" id="signUp" to="/sign-up">
+                Sign Up
+              </Link>
+            ) : (
+              <button
+                className="btn btn-secondary"
+                id="logout"
+                onClick={(e) => props.callback(e)}
+              >
+                Logout
+              </button>
+            )}
           </div>
         </div>
       </nav>
