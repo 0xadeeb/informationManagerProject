@@ -29,13 +29,13 @@ def Getdata():
 
     return jsonify(dict(notes = allNotes)), 200
 
-@api.route('/add-notes', methods = ['POST'])
+@api.route('/add-note', methods = ['POST'])
 @jwt_required()
 def addData():
 
     id = get_jwt_identity()
     data = json.loads(request.data)
-
+    print(data)
     db.insert(data, 3, id)
 
     return jsonify(dict(msg = "Note Added" )), 200
@@ -46,5 +46,16 @@ def addData():
 def getNoteData():
     noteId = json.loads(request.data)['id']
     res = db.getContents(noteId)
-
+    res['tags'] = [t[0] for t in res['tags']]
     return jsonify(res), 200
+
+
+@api.route('/edit-note', methods = ['POST'])
+@jwt_required()
+def editData():
+
+    data = json.loads(request.data)
+    # print(data)
+    db.updateNote(data['title'],data['note'],False,data['id'], data['tags'])
+
+    return jsonify(dict(msg = "Note Added" )), 200

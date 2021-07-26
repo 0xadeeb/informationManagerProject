@@ -26,6 +26,7 @@ function NoteInfo(props) {
             {props.tags.map((tag) => {
               return (
                 <span
+                  key={tag}
                   className="badge bg-secondary larger-badge m-1"
                   style={{ color: "white" }}
                 >
@@ -39,7 +40,11 @@ function NoteInfo(props) {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button className="btn btn-primary mr-auto" variant="primary">
+        <Button
+          className="btn btn-primary mr-auto"
+          variant="primary"
+          onClick={props.setEditModal}
+        >
           Edit
         </Button>
         <Button

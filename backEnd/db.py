@@ -103,10 +103,27 @@ def getContents(id):
     d['tags'] = cur.fetchall()
     return d
 
-def updateNote(newTitle, newNote, star, id):
+def updateNote(newTitle, newNote, star, id, t = []):
     db = getDb()
     cur = db.cursor()
     cur.execute("UPDATE notes SET title = %s, note = %s, addedOn = %s, stared = %s WHERE id = %s", (newTitle, newNote, datetime.datetime.now(), star, id))
+    print(id)
+    cur.execute("DELETE FROM notetags WHERE note = %s", (int(id),))
+    cur.execute("SELECT * FROM tags")
+    tags = cur.fetchall()
+    for item in t:
+            needToAdd = True
+            for tag in tags:
+                if tag[1] == item:
+                    cur.execute("INSERT INTO notetags (note, tag) VALUES (%s,%s)",(int(id),tag[0]))
+                    needToAdd = False
+                    break
+
+            if needToAdd:
+                cur.execute("INSERT INTO tags (tag) VALUES (%s)", (item,))
+                cur.execute("INSERT INTO notetags (note, tag) VALUES (%s,(SELECT id FROM tags where tag = %s))",(int(id),item.lower()))
+    
+
     db.commit()
 
 def logIn(userId):

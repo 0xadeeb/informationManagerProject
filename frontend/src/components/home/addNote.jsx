@@ -6,9 +6,9 @@ import TagsInput from "../text-area/tags";
 import "../../App.css";
 
 function NoteForm(props) {
-  const [title, setTitle] = useState("");
-  const [note, setNote] = useState("");
-  const [tags, setTags] = useState([]);
+  const [title, setTitle] = useState(props.title);
+  const [note, setNote] = useState(props.note);
+  const [tags, setTags] = useState(props.tags);
   const [token, setToken] = useToken();
 
   function submitClass() {
@@ -39,6 +39,7 @@ function NoteForm(props) {
       title: title,
       note: note,
       tags: tags,
+      id: props.id,
     };
 
     const h = {
@@ -47,7 +48,7 @@ function NoteForm(props) {
     };
 
     if (token) {
-      fetch(`${process.env.REACT_APP_API_SERVER}/api/add-notes`, {
+      fetch(`${process.env.REACT_APP_API_SERVER}/api/${props.method}-note`, {
         headers: h,
         method: "POST",
         body: JSON.stringify(data),
@@ -59,9 +60,6 @@ function NoteForm(props) {
         .catch((error) => console.error(error));
     }
 
-    setTitle("");
-    setNote("");
-    setTags([]);
     window.location.reload(true);
   };
 
@@ -73,6 +71,7 @@ function NoteForm(props) {
       backdrop="static"
       aria-labelledby="contained-modal-title-vcenter"
       scrollable={true}
+      animation={props.animation}
       centered
     >
       <Modal.Header>
@@ -100,12 +99,7 @@ function NoteForm(props) {
             tags={tags}
             selectedTags={(t) => updateTags(t)}
           ></TagsInput>
-          <Button
-            onClick={props.onHide}
-            className={submitClass()}
-            type="submit"
-            variant="primary"
-          >
+          <Button className={submitClass()} type="submit" variant="primary">
             Add note
           </Button>
         </Form>
