@@ -7,8 +7,6 @@ from . import db
 from .models import users
 import json
 from flask_jwt_extended import create_access_token
-from flask_jwt_extended import get_jwt_identity
-from flask_jwt_extended import jwt_required
 
 auth = Blueprint('auth', 'backEnd', url_prefix= '/')
 
@@ -74,6 +72,7 @@ def isLoggedin():
 def login():
     if(request.method == 'POST'):
         print('hi')
+        print(request.headers.get('Accepts'))
         print(request.accept_mimetypes.best)
 
         if (request.accept_mimetypes.best == "*/*"):

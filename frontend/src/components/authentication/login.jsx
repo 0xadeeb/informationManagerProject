@@ -15,7 +15,7 @@ function Login() {
   const [token, setToken] = useToken();
 
   if (token && token != undefined && token.length >= 10) {
-    window.localStorage.href = "/";
+    // histroy.push("/");
   }
 
   function updateUserName(event) {
@@ -47,7 +47,6 @@ function Login() {
         if (resp.accessToken) {
           sessionStorage.setItem("token", resp.accessToken);
           setToken(resp.accessToken);
-          histroy.push("/");
         }
       })
       .catch((e) => console.log(e));

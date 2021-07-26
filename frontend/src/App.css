@@ -7,3 +7,12 @@
   width: 25%;
   padding: 10px;
 }
+
+.my-modalw {
+  width: 90vw;
+  max-width: 90vw;
+}
+
+.my-modalh {
+  height: 45vw;
+}

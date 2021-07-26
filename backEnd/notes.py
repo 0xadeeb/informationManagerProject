@@ -1,5 +1,4 @@
-import re
-from flask import Blueprint
+from flask import Blueprint, jsonify
 from flask.helpers import url_for
 from flask_login.utils import login_required, current_user, request
 from flask import render_template
