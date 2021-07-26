@@ -55,7 +55,7 @@ def insert(d, opt, user):
         cur.execute("SELECT id FROM notes WHERE note = %s",(notes,))
         noteId = cur.fetchone()[0]
         if opt == 2:
-            t = [ item.lower() for item in d if item != 'note' and item != 'title']
+            t = [ item for item in d if item != 'note' and item != 'title']
         elif opt == 3:
             t = d.get('tags')
         
@@ -69,7 +69,7 @@ def insert(d, opt, user):
 
             if needToAdd:
                 cur.execute("INSERT INTO tags (tag) VALUES (%s)", (item,))
-                cur.execute("INSERT INTO notetags (note, tag) VALUES (%s,(SELECT id FROM tags where tag = %s))",(noteId,item))
+                cur.execute("INSERT INTO notetags (note, tag) VALUES (%s,(SELECT id FROM tags where tag = %s))",(noteId,item.lower()))
             
 
         db.commit()   

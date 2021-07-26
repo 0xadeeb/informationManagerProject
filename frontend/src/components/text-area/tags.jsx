@@ -31,7 +31,7 @@ function TagsInput(props) {
       <input
         type="text"
         onKeyUp={(event) => (event.keyCode === 32 ? addTags(event) : null)}
-        placeholder="Space bar to add tags"
+        placeholder="Space bar to a add tag"
       />
     </div>
   );

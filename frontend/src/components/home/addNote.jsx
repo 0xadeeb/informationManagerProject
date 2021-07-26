@@ -1,11 +1,11 @@
-import { Modal, Button, Row, Col, Form } from "react-bootstrap";
+import { Modal, Button, Form } from "react-bootstrap";
 import { useState } from "react";
 import { useToken } from "../../stores/context";
 import TextBox from "../text-area/textArea";
 import TagsInput from "../text-area/tags";
 import "../../App.css";
 
-function AddNote(props) {
+function NoteForm(props) {
   const [title, setTitle] = useState("");
   const [note, setNote] = useState("");
   const [tags, setTags] = useState([]);
@@ -14,8 +14,8 @@ function AddNote(props) {
   function submitClass() {
     let c = "btn btn-";
     return title.length === 0 || note.length === 0
-      ? c + "secondary disabled my-3"
-      : c + "primary my-3";
+      ? c + "secondary disabled mt-5"
+      : c + "primary mt-5";
   }
 
   function updateTitle(e) {
@@ -106,7 +106,7 @@ function AddNote(props) {
             type="submit"
             variant="primary"
           >
-            Save
+            Add note
           </Button>
         </Form>
       </Modal.Body>
@@ -116,11 +116,11 @@ function AddNote(props) {
           variant="secondary"
           onClick={props.onHide}
         >
-          Close
+          Cancel
         </Button>
       </Modal.Footer>
     </Modal>
   );
 }
 
-export default AddNote;
+export default NoteForm;

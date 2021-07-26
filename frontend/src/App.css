@@ -15,4 +15,10 @@
 
 .my-modalh {
   height: 45vw;
+  white-space: pre-line;
+  border-radius: 20px;
+}
+
+.notesTable tr {
+  cursor: pointer;
 }

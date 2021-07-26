@@ -20,6 +20,13 @@ def Getdata():
     id = get_jwt_identity()
     allNotes = db.allNotes(id)
 
+    colNames = ['Sno', 'noteId', 'Title', 'Stared']
+
+
+    for i in range(len(allNotes)):
+        allNotes[i] = dict(zip(colNames, allNotes[i]))
+
+
     return jsonify(dict(notes = allNotes)), 200
 
 @api.route('/add-notes', methods = ['POST'])
@@ -31,4 +38,13 @@ def addData():
 
     db.insert(data, 3, id)
 
-    return jsonify(dict(msg = "Note Added" ))
+    return jsonify(dict(msg = "Note Added" )), 200
+
+
+@api.route('/get-notes-info', methods = ['POST'])
+@jwt_required()
+def getNoteData():
+    noteId = json.loads(request.data)['id']
+    res = db.getContents(noteId)
+
+    return jsonify(res), 200
