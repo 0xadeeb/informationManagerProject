@@ -91,6 +91,13 @@ def filterbyTag(tag, id):
     cur.execute("SELECT ROW_NUMBER() OVER (ORDER BY n.Id) AS Sno, n.id, n.title, n.stared FROM notes n, users u, tags t, notetags nt WHERE n.usr = %s AND u.id = n.usr AND t.tag = %s AND t.id = nt.tag AND n.id = nt.note", (id, tag))
     return cur.fetchall()
 
+def getAllTags(id):
+    db = getDb()
+    cur = db.cursor()
+
+    cur.execute("SELECT DISTINCT t.id, t.tag FROM tags t, users u, notes n, notetags nt WHERE u.id = n.usr AND u.id = %s AND t.id = nt.tag AND n.id = nt.note",(id,))
+    return cur.fetchall()
+
 def getContents(id):
 
     db = getDb()

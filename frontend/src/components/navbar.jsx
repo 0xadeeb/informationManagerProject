@@ -18,11 +18,11 @@ function Navbar(props) {
         <div className="collapse navbar-collapse" id="navbar">
           <div className="navbar-nav">
             {!token ? (
-              <Link className="nav-item nav-link" id="login" to="/log-in">
+              <Link className="nav-item nav-link mr-3" id="login" to="/log-in">
                 Login
               </Link>
             ) : (
-              <Link className="nav-item nav-link" id="home" to="/">
+              <Link className="nav-item nav-link mr-3" id="home" to="/">
                 Home
               </Link>
             )}

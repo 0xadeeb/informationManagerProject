@@ -6,6 +6,8 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import Search from "./searchBar";
 import NoteForm from "./addNote";
 import NoteInfo from "./noteInfo";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 import "../../App.css";
 
 function Home() {
@@ -14,7 +16,8 @@ function Home() {
   const [showInfoModal, setInfoModal] = useState(false);
   const [showEditModal, setEditModal] = useState(false);
   const [noteInfo, setNoteInfo] = useState({});
-  const [searchText, setSeacrhTet] = useState("new");
+  const [searchText, setSeacrhTet] = useState("");
+  const [filteredTags, setFilteredTags] = useState([]);
   const [token, setToken] = useToken();
 
   useEffect(() => {
@@ -30,6 +33,7 @@ function Home() {
         .then((resp) => resp.json())
         .then((r) => {
           setData(r);
+          console.log(r);
         })
         .catch((error) => console.log(error));
     }
@@ -80,6 +84,31 @@ function Home() {
         console.log(resp);
       })
       .catch((error) => console.log(error));
+  };
+
+  const filterNotes = async () => {
+    if (filteredTags.length === 0) return;
+
+    let h = {
+      Accepts: "application/json",
+      Authorization: `Bearer ${token}`,
+    };
+
+    if (token) {
+      fetch(`${process.env.REACT_APP_API_SERVER}/api/get-filtered-notes`, {
+        headers: h,
+        method: "POST",
+        body: JSON.stringify({
+          tags: filteredTags,
+        }),
+      })
+        .then((resp) => resp.json())
+        .then((r) => {
+          setData(r);
+          console.log(r);
+        })
+        .catch((error) => console.log(error));
+    }
   };
 
   const col = [
@@ -145,14 +174,39 @@ function Home() {
           <br />
           <div className="row">
             <div className="col-md-1 col-sm-1 col-xs-12"></div>
-            <div className="col-md-9 col-sm-9 col-xs-12">
+            <div className="col-md-10 col-sm-10 col-xs-12">
               <Search setSeacrhTet={setSeacrhTet} searchText={searchText} />
             </div>
-            <div className="col-md-2 col-sm-2 col-xs-12">
+            <div className="col-md-1 col-sm-1 col-xs-12"></div>
+          </div>
+          <div className="row mb-4">
+            <div className="col-md-1 col-sm-1 col-xs-12"></div>
+            <div className="col-md-5 col-sm-5 col-xs-12">
+              <Select
+                placeholder="Filter by tags"
+                options={data.tags}
+                components={makeAnimated()}
+                onChange={setFilteredTags}
+                noOptionsMessage={() =>
+                  "None of the notes have a tag to filter."
+                }
+                isMulti
+                autoFocus
+                isSearchable
+              />
+            </div>
+            <div className="col-md-5 col-sm-5 col-xs-12">
+              <Button
+                className="btn btn-dark mr-4"
+                onClick={() => filterNotes()}
+              >
+                Filter
+              </Button>
               <Button className="btn btn-info" onClick={() => openModal()}>
-                Add note
+                Add a new note
               </Button>
             </div>
+            <div className="col-md-1 col-sm-1 col-xs-12"></div>
           </div>
           <div className="row">
             <div className="col-md-1 col-sm-1 col-xs-12"></div>
