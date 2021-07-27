@@ -108,6 +108,7 @@ function Home() {
                 note={noteInfo.note[1]}
                 addedOn={noteInfo.note[2]}
                 stared={noteInfo.note[3].toString()}
+                id={noteInfo.note[4]}
                 tags={noteInfo.tags}
                 setEditModal={() => openEditModal()}
               />

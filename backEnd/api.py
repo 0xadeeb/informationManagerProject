@@ -35,7 +35,6 @@ def addData():
 
     id = get_jwt_identity()
     data = json.loads(request.data)
-    print(data)
     db.insert(data, 3, id)
 
     return jsonify(dict(msg = "Note Added" )), 200
@@ -55,7 +54,17 @@ def getNoteData():
 def editData():
 
     data = json.loads(request.data)
-    # print(data)
     db.updateNote(data['title'],data['note'],False,data['id'], data['tags'])
 
     return jsonify(dict(msg = "Note Added" )), 200
+
+
+@api.route('/delete-note', methods = ['POST'])
+@jwt_required()
+def deleteNote():
+
+    data = json.loads(request.data)
+    id = get_jwt_identity()
+    db.delete(data['id'],id,1)
+
+    return jsonify(dict(msg = "Note Deleted" )), 200

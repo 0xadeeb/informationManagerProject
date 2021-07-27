@@ -14,8 +14,8 @@ function NoteForm(props) {
   function submitClass() {
     let c = "btn btn-";
     return title.length === 0 || note.length === 0
-      ? c + "secondary disabled mt-5"
-      : c + "primary mt-5";
+      ? c + "secondary disabled mt-5 mr-auto"
+      : c + "primary mt-5 mr-auto";
   }
 
   function updateTitle(e) {
@@ -80,31 +80,32 @@ function NoteForm(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={(e) => handleSubmit(e)}>
-          <TextBox
-            placeHolder={"Title"}
-            value={title}
-            callBack={updateTitle}
-            rows={"1"}
-            style={{ fontSize: 23 }}
-          ></TextBox>
-          <TextBox
-            placeHolder={"Well go on..."}
-            value={note}
-            callBack={updateNote}
-            rows={"12"}
-          ></TextBox>
+        <TextBox
+          placeHolder={"Title"}
+          value={title}
+          callBack={updateTitle}
+          rows={"1"}
+          style={{ fontSize: 23 }}
+        ></TextBox>
+        <TextBox
+          placeHolder={"Well go on..."}
+          value={note}
+          callBack={updateNote}
+          rows={"13"}
+        ></TextBox>
 
-          <TagsInput
-            tags={tags}
-            selectedTags={(t) => updateTags(t)}
-          ></TagsInput>
-          <Button className={submitClass()} type="submit" variant="primary">
-            Add note
-          </Button>
-        </Form>
+        <TagsInput tags={tags} selectedTags={(t) => updateTags(t)}></TagsInput>
       </Modal.Body>
       <Modal.Footer>
+        <Button
+          className={submitClass()}
+          type="submit"
+          variant="primary"
+          onClick={(e) => handleSubmit(e)}
+        >
+          Add note
+        </Button>
+
         <Button
           className="btn btn-danger"
           variant="secondary"

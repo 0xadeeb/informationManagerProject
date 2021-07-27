@@ -1,7 +1,31 @@
 import { Modal, Button } from "react-bootstrap";
+import { useToken } from "../../stores/context";
 import "../../App.css";
 
 function NoteInfo(props) {
+  const [token, setToken] = useToken();
+
+  const deleteNote = async () => {
+    const data = { id: props.id },
+      h = {
+        Accepts: "application/json",
+        Authorization: `Bearer ${token}`,
+      };
+
+    fetch(`${process.env.REACT_APP_API_SERVER}/api/delete-note`, {
+      headers: h,
+      method: "POST",
+      body: JSON.stringify(data),
+    })
+      .then((resp) => resp.json())
+      .then((resp) => {
+        console.log(resp);
+      })
+      .catch((error) => console.error(error));
+
+    window.location.reload(true);
+  };
+
   return (
     <Modal
       {...props}
@@ -40,15 +64,24 @@ function NoteInfo(props) {
         </div>
       </Modal.Body>
       <Modal.Footer>
+        <span className="mr-auto">
+          <Button
+            className="btn btn-primary mr-3"
+            variant="primary"
+            onClick={props.setEditModal}
+          >
+            Edit
+          </Button>
+          <Button
+            className="btn btn-danger"
+            variant="primary"
+            onClick={deleteNote}
+          >
+            Delete note
+          </Button>
+        </span>
         <Button
-          className="btn btn-primary mr-auto"
-          variant="primary"
-          onClick={props.setEditModal}
-        >
-          Edit
-        </Button>
-        <Button
-          className="btn btn-danger"
+          className="btn btn-warning"
           variant="secondary"
           onClick={props.onHide}
         >

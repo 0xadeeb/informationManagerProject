@@ -107,7 +107,6 @@ def updateNote(newTitle, newNote, star, id, t = []):
     db = getDb()
     cur = db.cursor()
     cur.execute("UPDATE notes SET title = %s, note = %s, addedOn = %s, stared = %s WHERE id = %s", (newTitle, newNote, datetime.datetime.now(), star, id))
-    print(id)
     cur.execute("DELETE FROM notetags WHERE note = %s", (int(id),))
     cur.execute("SELECT * FROM tags")
     tags = cur.fetchall()
