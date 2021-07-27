@@ -76,7 +76,7 @@ function NoteForm(props) {
     >
       <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter text-center">
-          Add a new note.
+          {props.heading}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -103,7 +103,7 @@ function NoteForm(props) {
           variant="primary"
           onClick={(e) => handleSubmit(e)}
         >
-          Add note
+          Save note
         </Button>
 
         <Button

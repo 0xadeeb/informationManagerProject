@@ -3,6 +3,7 @@ import { useToken } from "../../stores/context";
 import { Button, Spinner } from "react-bootstrap";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
+import Search from "./searchBar";
 import NoteForm from "./addNote";
 import NoteInfo from "./noteInfo";
 import "../../App.css";
@@ -13,6 +14,7 @@ function Home() {
   const [showInfoModal, setInfoModal] = useState(false);
   const [showEditModal, setEditModal] = useState(false);
   const [noteInfo, setNoteInfo] = useState({});
+  const [searchText, setSeacrhTet] = useState("new");
   const [token, setToken] = useToken();
 
   useEffect(() => {
@@ -115,6 +117,7 @@ function Home() {
               <NoteForm
                 show={showEditModal}
                 onHide={() => closeEditModal()}
+                heading="Edit note"
                 title={noteInfo.note[0]}
                 note={noteInfo.note[1]}
                 stared={noteInfo.note[3].toString()}
@@ -128,6 +131,7 @@ function Home() {
             <NoteForm
               show={showModal}
               onHide={() => closeModal()}
+              heading="Add a new note"
               title=""
               note=""
               stared=""
@@ -139,10 +143,16 @@ function Home() {
           )}
 
           <br />
-          <div align="center">
-            <Button className="btn btn-info m-3" onClick={() => openModal()}>
-              Add note
-            </Button>
+          <div className="row">
+            <div className="col-md-1 col-sm-1 col-xs-12"></div>
+            <div className="col-md-9 col-sm-9 col-xs-12">
+              <Search setSeacrhTet={setSeacrhTet} searchText={searchText} />
+            </div>
+            <div className="col-md-2 col-sm-2 col-xs-12">
+              <Button className="btn btn-info" onClick={() => openModal()}>
+                Add note
+              </Button>
+            </div>
           </div>
           <div className="row">
             <div className="col-md-1 col-sm-1 col-xs-12"></div>
@@ -150,7 +160,9 @@ function Home() {
               <BootstrapTable
                 classes="notesTable"
                 keyField="noteId"
-                data={data.notes}
+                data={data.notes.filter((note) => {
+                  return note.Title.toLowerCase().includes(searchText);
+                })}
                 columns={col}
                 pagination={paginationFactory()}
                 rowEvents={rowData}
