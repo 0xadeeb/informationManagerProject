@@ -1,6 +1,8 @@
+import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
+
 function Password(props) {
   return (
-    <div className="form-group ">
+    <div className="mt-3">
       <label>{props.label}</label>
       <input
         type="password"

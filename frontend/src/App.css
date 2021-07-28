@@ -22,3 +22,42 @@
 .notesTable tr {
   cursor: pointer;
 }
+
+.btn-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: block;
+  width: 50px;
+  height: 50px;
+  font-size: 0;
+  opacity: 0.3;
+}
+.btn-close:hover {
+  opacity: 1;
+}
+
+.btn-close:before,
+.btn-close:after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 20px;
+  background-color: #000000;
+  transform: rotate(45deg) translate(-50%, -50%);
+  transform-origin: top left;
+  content: "";
+}
+.btn-close:after {
+  transform: rotate(-45deg) translate(-50%, -50%);
+}
+.btn-close:before,
+.btn-close:after {
+  width: 2px;
+}
+
+.btn-close:before,
+.btn-close:after {
+  height: 25px;
+}

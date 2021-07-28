@@ -1,22 +1,17 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router";
+import { Redirect } from "react-router-dom";
 import Password from "../text-area/password";
 import SmallTextBox from "../text-area/smallTextBox";
-import CheckBox from "../buttons/checkBox";
 import { useToken } from "../../stores/context";
+import { Alert } from "react-bootstrap";
 import "../../App.css";
 import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
 
 function Login() {
-  let histroy = useHistory();
-
   const [userName, setUserName] = useState("");
   const [pswrd, setPassword] = useState("");
   const [token, setToken] = useToken();
-
-  if (token && token != undefined && token.length >= 10) {
-    // histroy.push("/");
-  }
+  const [alertMsg, setAlertMsg] = useState(null);
 
   function updateUserName(event) {
     setUserName(event.target.value);
@@ -43,21 +38,29 @@ function Login() {
       .then((resp) => resp.json())
       .then((resp) => {
         console.log(resp);
-        // alert(resp.msg);
         if (resp.accessToken) {
           sessionStorage.setItem("token", resp.accessToken);
           setToken(resp.accessToken);
         }
+        setAlertMsg([resp.msg, resp.variant]);
       })
       .catch((e) => console.log(e));
   };
 
   return token && token != undefined && token.length >= 10 ? (
-    <div>
-      <h2>You are logged in</h2>
-    </div>
+    <Redirect to="/" />
   ) : (
     <div className="customBG">
+      {alertMsg ? (
+        <Alert
+          variant={alertMsg[1]}
+          key={1}
+          onClose={() => setAlertMsg(null)}
+          dismissible
+        >
+          <p> {alertMsg[0]}</p>
+        </Alert>
+      ) : null}
       <br />
       <br />
       <div className="center">
@@ -75,7 +78,6 @@ function Login() {
             value={pswrd}
             callBack={updatePassword}
           />
-          <CheckBox />
           <br />
           <button type="submit" className="btn btn-primary">
             Log In

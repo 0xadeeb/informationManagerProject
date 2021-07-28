@@ -1,6 +1,6 @@
 function SmallTextBox(props) {
   return (
-    <div className="form-grsTextBoxoup">
+    <div className="mt-2">
       <label>{props.label}</label>
       <input
         type="text"

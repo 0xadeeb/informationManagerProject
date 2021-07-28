@@ -53,9 +53,9 @@ def insertToDb(r):
 
         if db.uniqueId(userName):
             db.insert(d, 1, None)
-            return jsonify(dict(success = True, error = None))
+            return jsonify(dict(variant = 'success', msg = "New account created."))
         else:
-            return jsonify(dict(success = False, error = "Sorry User Name not available, Pick a new User Name"))
+            return jsonify(dict(variant = 'danger', msg = "Sorry User Name not available, Pick a new User Name"))
 
 
     else:
@@ -97,9 +97,9 @@ def insertToDb(r):
 def login():
     if(request.method == 'POST'):
         # print('hi')
-        print(request.headers)
-        print(request.headers.get('Accepts'))
-        print(request.accept_mimetypes.best)
+        # print(request.headers)
+        # print(request.headers.get('Accepts'))
+        # print(request.accept_mimetypes.best)
 
         if (request.headers.get('Accepts')):
             data = json.loads(request.data)
@@ -123,7 +123,7 @@ def login():
 
         if t == None:
             if (request.headers.get('Accepts')):
-                return jsonify(dict(msg = 'Invalid username!'))
+                return jsonify(dict(msg = 'Invalid username!', variant = 'danger'))
             flash('Incorrect Username', category='error')
             
         elif check_password_hash(hashedPass, pswrd):
@@ -132,13 +132,13 @@ def login():
 
             if (request.headers.get('Accepts')):
                 access_token = create_access_token(t[0])
-                return jsonify(dict(msg = 'Successfully logged in!', accessToken = access_token, userId = t[0]))
+                return jsonify(dict(msg = 'Successfully logged in!', variant = 'success', accessToken = access_token, userId = t[0]))
             else:
                 return redirect(url_for('notes.home'))
             
         else:
             if (request.headers.get('Accepts')):
-                return jsonify(dict(msg = 'Invalid Username or password'))
+                return jsonify(dict(msg = 'Invalid Username or password', variant = 'danger'))
             flash('Incorrect Username or password', category='error')
         return render_template('login.html', user = g.user)
 

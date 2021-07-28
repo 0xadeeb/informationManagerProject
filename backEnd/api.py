@@ -18,12 +18,17 @@ api = Blueprint('api', 'backEnd', url_prefix= '/api')
 def Getdata():
 
     id = get_jwt_identity()
-    allNotes = db.allNotes(id)
+    dbs = db.getDb()
+    cur = dbs.cursor()
+
+    cur.execute("SELECT n.id, n.title, n.stared FROM notes n, users u WHERE n.usr = %s AND u.id = %s ORDER BY n.addedOn", (id,id))
+
+    allNotes = cur.fetchall()
 
     colNames = ['Sno', 'noteId', 'Title', 'Stared']
 
     for i in range(len(allNotes)):
-        allNotes[i] = dict(zip(colNames, allNotes[i]))
+        allNotes[i] = dict(zip(colNames, (i+1,) + allNotes[i]))
 
     tagNames = ['value','label']
     tags = db.getAllTags(id)

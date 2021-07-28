@@ -44,14 +44,14 @@ function NoteInfo(props) {
       <Modal.Body>
         <div className="m-2">
           <h5>Last Modified on:</h5>
-          {props.addedOn}
+          {props.addedOn()}
 
-          <div className="m2">
+          <div className="mt-2">
             {props.tags.map((tag) => {
               return (
                 <span
                   key={tag}
-                  className="badge bg-secondary larger-badge m-1"
+                  className="badge bg-secondary larger-badge mr-2"
                   style={{ color: "white" }}
                 >
                   #{tag}

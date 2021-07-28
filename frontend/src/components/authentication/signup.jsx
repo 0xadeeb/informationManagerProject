@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
+import { Alert, Button } from "react-bootstrap";
 import Password from "../text-area/password";
 import SmallTextBox from "../text-area/smallTextBox";
 
@@ -10,6 +11,7 @@ function SignUp() {
   const [firstname, setFirstname] = useState("");
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
+  const [alertMsg, setAlertMsg] = useState(null);
 
   function updateUserName(event) {
     setUserName(event.target.value);
@@ -34,32 +36,35 @@ function SignUp() {
     console.log(userName);
 
     if (userName.length === 0) {
-      alert("Enter a user name!");
+      setAlertMsg(["Enter a user name!", "danger"]);
       return;
     }
 
     if (firstname.length === 0) {
-      alert("Enter your name!");
+      setAlertMsg(["Enter your name!", "danger"]);
       return;
     }
 
     if (password1.length === 0) {
-      alert("Enter a password!");
+      setAlertMsg(["Enter a password!", "danger"]);
       return;
     }
 
     if (password2.length === 0) {
-      alert("Confirm your password!");
+      setAlertMsg(["Confirm your password!", "danger"]);
       return;
     }
 
     if (password1.length < 6) {
-      alert("Password too short\nShould be minimun 6 characters");
+      setAlertMsg([
+        "Password too short- Should be minimun 6 characters",
+        "danger",
+      ]);
       return;
     }
 
     if (password1 !== password2) {
-      alert("Password didn't match.");
+      setAlertMsg(["Password didn't match.", "danger"]);
       return;
     }
 
@@ -76,14 +81,24 @@ function SignUp() {
     })
       .then((resp) => resp.json())
       .then((resp) => {
-        if (resp.error) alert(resp.error);
-        else alert("New account created.");
+        setAlertMsg([resp["msg"], resp["variant"]]);
       })
       .catch((e) => console.log(e));
   };
 
   return (
     <div className="customBG">
+      {alertMsg ? (
+        <Alert
+          variant={alertMsg[1]}
+          key={1}
+          onClose={() => setAlertMsg(null)}
+          dismissible
+        >
+          <p> {alertMsg[0]}</p>
+        </Alert>
+      ) : null}
+
       <br />
       <br />
       <div className="row">
