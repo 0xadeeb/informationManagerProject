@@ -1,6 +1,6 @@
-from flask import Blueprint
+from flask import Blueprint, g, request
 from flask.helpers import url_for
-from flask_login.utils import login_required, current_user, request
+from .auth import login_required
 from flask import render_template
 from werkzeug.utils import redirect
 from . import db
@@ -20,8 +20,8 @@ def format_date(d):
 @notes.route('/', methods = ['GET','POST'])
 @login_required
 def home():
-    allNotes = db.allNotes(current_user.id)
-    return render_template('notes.html', user = current_user, notes = allNotes)
+    allNotes = db.allNotes(g.user.id)
+    return render_template('notes.html', user = g.user, notes = allNotes)
 
 @notes.route('/<nid>')
 @login_required
@@ -33,7 +33,7 @@ def content(nid):
         return render_template(
                 
                 'noteDetails.html',
-                user = current_user, 
+                user = g.user, 
                 title = data['note'][0],
                 notes = data['note'][1],
                 addedOn = format_date(data['note'][2]),
@@ -68,7 +68,7 @@ def edit(nid):
         return render_template(
                 
                 'editNotes.html',
-                user = current_user, 
+                user = g.user, 
                 title = data['note'][0],
                 notes = data['note'][1],
                 addedOn = format_date(data['note'][2]),
@@ -84,20 +84,20 @@ def edit(nid):
 @notes.route("/search/<field>/<value>")
 @login_required
 def tagSearch(field, value):
-    filteredNotes = db.filterbyTag(value, current_user.id)
-    return render_template('notes.html', user = current_user, notes = filteredNotes)
+    filteredNotes = db.filterbyTag(value, g.user.id)
+    return render_template('notes.html', user = g.user, notes = filteredNotes)
 
 @notes.route('/add-note', methods = ['GET','POST'])
 @login_required
 def addNote():
     if request.method == 'POST':
-        db.insert(request.form, 2, current_user.id)
+        db.insert(request.form, 2, g.user.id)
         return redirect(url_for('notes.home'))
         
-    return render_template('addNotes.html', user = current_user)
+    return render_template('addNotes.html', user = g.user)
 
 @notes.route('<nid>/delete-note')
 @login_required
 def deleteNote(nid):
-    db.delete(nid, current_user.id, 1)
+    db.delete(nid, g.user.id, 1)
     return redirect(url_for('notes.home'))

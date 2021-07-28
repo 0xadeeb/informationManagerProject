@@ -1,18 +1,53 @@
-from flask import Blueprint, render_template, request, flash, jsonify
+from flask import Blueprint, render_template, request, flash, jsonify, session, g
 from flask.helpers import url_for
 from werkzeug.security import check_password_hash
-from flask_login import login_user, login_required, LoginManager, logout_user, current_user
 from werkzeug.utils import redirect
 from . import db
-from .models import users
+from .models import User
 import json
 from flask_jwt_extended import create_access_token
+import functools
 
 auth = Blueprint('auth', 'backEnd', url_prefix= '/')
 
+
+def login_required(view):
+    
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for("auth.login"))
+
+        return view(**kwargs)
+
+    return wrapped_view
+
+
+@auth.before_app_request
+def load_logged_in_user():
+    
+    user_id = session.get("user_id")
+
+    if user_id is None:
+        g.user = None
+    else:
+        dbase = db.getDb()
+        cur = dbase.cursor()
+        cur.execute("SELECT * FROM users WHERE id = %s", (user_id,))
+        t = cur.fetchone()
+        user = User()
+        user.id = t[0]
+        user.username = t[1]
+        user.name = t[2]
+        user.password = t[3]
+        user.is_authenticated = True
+        g.user = user
+        
+        
+
 def insertToDb(r):
 
-    if r.accept_mimetypes.best == "*/*":
+    if r.headers.get('Accepts'):
         d = json.loads(r.data)
         userName = d['userName']
 
@@ -56,26 +91,17 @@ def insertToDb(r):
         flash('Sorry User Name not available, Pick a new User Name.',category='error')
 
     return None
-
-@auth.route('/is-autherised', methods = ['GET','POST'])
-def isLoggedin():
-
-    data = json.loads(request.data)
-    id = data['id']
-    if current_user.is_authenticated:
-        return jsonify(dict(autherised = (current_user.id == int(id))))
-    else:
-        return jsonify(dict(autherised = False))
     
 
 @auth.route('/login', methods = ['GET','POST'])
 def login():
     if(request.method == 'POST'):
-        print('hi')
+        # print('hi')
+        print(request.headers)
         print(request.headers.get('Accepts'))
         print(request.accept_mimetypes.best)
 
-        if (request.accept_mimetypes.best == "*/*"):
+        if (request.headers.get('Accepts')):
             data = json.loads(request.data)
             userId = data['userName']
             pswrd = data['pass']
@@ -96,35 +122,28 @@ def login():
             hashedPass = 'sha256$'+t[3] 
 
         if t == None:
-            if (request.accept_mimetypes.best == "*/*"):
+            if (request.headers.get('Accepts')):
                 return jsonify(dict(msg = 'Invalid username!'))
             flash('Incorrect Username', category='error')
             
         elif check_password_hash(hashedPass, pswrd):
             flash('Logged in successfully!', category='success')
-            
-            user = users()
-            user.id = t[0]
-            user.username = t[1]
-            user.name = t[2]
-            user.password = t[3]
+            session["user_id"] = t[0]
 
-            login_user(user, remember=remMe)
-
-            if (request.accept_mimetypes.best == "*/*"):
-                access_token = create_access_token(user.id)
+            if (request.headers.get('Accepts')):
+                access_token = create_access_token(t[0])
                 return jsonify(dict(msg = 'Successfully logged in!', accessToken = access_token, userId = t[0]))
             else:
                 return redirect(url_for('notes.home'))
             
         else:
-            if (request.accept_mimetypes.best == "*/*"):
+            if (request.headers.get('Accepts')):
                 return jsonify(dict(msg = 'Invalid Username or password'))
             flash('Incorrect Username or password', category='error')
-        return render_template('login.html', user = current_user)
+        return render_template('login.html', user = g.user)
 
     else:
-        return render_template('login.html', user = current_user)
+        return render_template('login.html', user = g.user)
 
 
 @auth.route('/signup', methods = ['GET','POST'])
@@ -134,11 +153,11 @@ def signup():
         if d:
             return d
 
-    return render_template('signUp.html', user = current_user)
+    return render_template('signUp.html', user = g.user)
 
 
 @auth.route('/logout')
 @login_required
 def logout():
-    logout_user()
+    session.clear()
     return redirect(url_for('auth.login'))

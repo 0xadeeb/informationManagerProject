@@ -1,28 +1,30 @@
-from .__init__ import dbase
-from flask_login import UserMixin
-from sqlalchemy.sql import func
 
+class User(dict):
+    
+    def __init__(self, *args, **kwargs):
+        super(User, self).__init__(*args, **kwargs)
+        for arg in args:
+            if isinstance(arg, dict):
+                for k, v in arg.iteritems():
+                    self[k] = v
 
-class users(dbase.Model, UserMixin):
-    id = dbase.Column(dbase.Integer, primary_key=True)
-    username = dbase.Column(dbase.String(150), unique=True)
-    password = dbase.Column(dbase.String(150))
-    name = dbase.Column(dbase.String(150))
+        if kwargs:
+            for k, v in kwargs.iteritems():
+                self[k] = v
 
+    def __getattr__(self, attr):
+        return self.get(attr)
 
-class notes(dbase.Model):
-    id = dbase.Column(dbase.Integer, primary_key=True)
-    notes = dbase.Column(dbase.String(10000))
-    added_on = dbase.Column(dbase.DateTime(timezone=True), default=func.now())
-    stared = dbase.Column(dbase.Boolean)
+    def __setattr__(self, key, value):
+        self.__setitem__(key, value)
 
-    user = dbase.Column(dbase.Integer, dbase.ForeignKey('user.id'))
+    def __setitem__(self, key, value):
+        super(User, self).__setitem__(key, value)
+        self.__dict__.update({key: value})
 
-class tags(dbase.Model):
-    id = dbase.Column(dbase.Integer, primary_key=True)
-    tag = dbase.Column(dbase.String(150), unique=True)
+    def __delattr__(self, item):
+        self.__delitem__(item)
 
-class noteTags(dbase.Model):
-    id = dbase.Column(dbase.Integer, primary_key=True)
-    user = dbase.Column(dbase.Integer, dbase.ForeignKey('users.id'))
-    tag = dbase.Column(dbase.Integer, dbase.ForeignKey('tags.id'))
+    def __delitem__(self, key):
+        super(User, self).__delitem__(key)
+        del self.__dict__[key]

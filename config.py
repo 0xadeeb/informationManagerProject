@@ -5,12 +5,10 @@ class Config(object):
     JWT_SECRET_KEY = '(:guessTheKey_JWTVersion:)'
 
     DB_NAME = "userNotes"
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
     SESSION_TYPE = 'filesystem'
     JWT_ACCESS_TOKEN_EXPIRES = False
 
     SESSION_COOKIE_SECURE = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://adeeb:test123@localhost/userNotes'
 
 class developmentConfig(Config):
 
