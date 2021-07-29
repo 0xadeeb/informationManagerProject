@@ -1,10 +1,5 @@
-from flask import Blueprint, jsonify
-from flask.helpers import url_for
-from flask_login.utils import login_required, current_user, request
-from flask import render_template
-from werkzeug.utils import redirect
+from flask import Blueprint, jsonify, request
 from . import db
-import datetime
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 import json

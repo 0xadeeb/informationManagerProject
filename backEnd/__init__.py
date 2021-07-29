@@ -1,5 +1,4 @@
 from flask import Flask as flsk
-from . import models
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
   
