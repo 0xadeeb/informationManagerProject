@@ -8,7 +8,7 @@ import datetime
 def getDb():
     if 'db' not in g:
         db = current_app.config['DB_NAME']
-        g.db = psycopg2.connect(f"dbname={db}", sslmode='require')
+        g.db = psycopg2.connect(db, sslmode='require')
 
     return g.db
 
