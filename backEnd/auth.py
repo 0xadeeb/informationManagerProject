@@ -11,37 +11,37 @@ import functools
 auth = Blueprint('auth', 'backEnd', url_prefix= '/')
 
 
-def login_required(view):
+# def login_required(view):
     
-    @functools.wraps(view)
-    def wrapped_view(**kwargs):
-        if g.user is None:
-            return redirect(url_for("auth.login"))
+#     @functools.wraps(view)
+#     def wrapped_view(**kwargs):
+#         if g.user is None:
+#             return redirect(url_for("auth.login"))
 
-        return view(**kwargs)
+#         return view(**kwargs)
 
-    return wrapped_view
+#     return wrapped_view
 
 
-@auth.before_app_request
-def load_logged_in_user():
+# @auth.before_app_request
+# def load_logged_in_user():
     
-    user_id = session.get("user_id")
+#     user_id = session.get("user_id")
 
-    if user_id is None:
-        g.user = None
-    else:
-        dbase = db.getDb()
-        cur = dbase.cursor()
-        cur.execute("SELECT * FROM users WHERE id = %s", (user_id,))
-        t = cur.fetchone()
-        user = User()
-        user.id = t[0]
-        user.username = t[1]
-        user.name = t[2]
-        user.password = t[3]
-        user.is_authenticated = True
-        g.user = user
+#     if user_id is None:
+#         g.user = None
+#     else:
+#         dbase = db.getDb()
+#         cur = dbase.cursor()
+#         cur.execute("SELECT * FROM users WHERE id = %s", (user_id,))
+#         t = cur.fetchone()
+#         user = User()
+#         user.id = t[0]
+#         user.username = t[1]
+#         user.name = t[2]
+#         user.password = t[3]
+#         user.is_authenticated = True
+#         g.user = user
         
         
 
@@ -98,8 +98,8 @@ def signup():
 
 
 
-@auth.route('/logout')
-@login_required
-def logout():
-    session.clear()
-    return redirect(url_for('auth.login'))
+# @auth.route('/logout')
+# @login_required
+# def logout():
+#     session.clear()
+#     return redirect(url_for('auth.login'))
