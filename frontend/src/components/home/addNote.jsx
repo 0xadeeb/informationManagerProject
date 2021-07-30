@@ -60,6 +60,10 @@ function NoteForm(props) {
         .catch((error) => console.error(error));
     }
 
+    setNote("");
+    setTitle("");
+    setTags([]);
+
     props.onHide();
   };
 
