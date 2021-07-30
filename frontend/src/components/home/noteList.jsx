@@ -27,7 +27,7 @@ function Home() {
       Authorization: `Bearer ${token}`,
     };
 
-    if (token) {
+    if (token && setModal == false && setEditModal == false) {
       fetch(`/api/getallnotes`, {
         headers: h,
       })
@@ -38,7 +38,7 @@ function Home() {
         })
         .catch((error) => console.log(error));
     }
-  }, [token]);
+  }, [token, setModal, setEditModal]);
 
   // console.log(data);
 

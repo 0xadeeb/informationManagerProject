@@ -60,11 +60,15 @@ function SignUp() {
         "Password too short- Should be minimun 6 characters",
         "danger",
       ]);
+      setPassword1("");
+      setPassword2("");
       return;
     }
 
     if (password1 !== password2) {
       setAlertMsg(["Password didn't match.", "danger"]);
+      setPassword1("");
+      setPassword2("");
       return;
     }
 
@@ -82,6 +86,10 @@ function SignUp() {
       .then((resp) => resp.json())
       .then((resp) => {
         setAlertMsg([resp["msg"], resp["variant"]]);
+        setUserName("");
+        setFirstname("");
+        setPassword1("");
+        setPassword2("");
       })
       .catch((e) => console.log(e));
   };
