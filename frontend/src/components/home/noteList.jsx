@@ -38,7 +38,7 @@ function Home() {
         })
         .catch((error) => console.log(error));
     }
-  }, [token, setModal, setEditModal]);
+  }, [token, showModal, showEditModal]);
 
   // console.log(data);
 
