@@ -20,7 +20,6 @@ class developmentConfig(Config):
 
 class testingConfig(Config):
     TESTING = True
-    DB_NAME = "testUserNotes"
 
 class productionConfig(Config):
     pass

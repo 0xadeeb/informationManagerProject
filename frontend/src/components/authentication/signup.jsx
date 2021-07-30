@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router";
-import { Alert, Button } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
 import Password from "../text-area/password";
 import SmallTextBox from "../text-area/smallTextBox";
 
 function SignUp() {
-  let histroy = useHistory();
-
   const [userName, setUserName] = useState("");
   const [firstname, setFirstname] = useState("");
   const [password1, setPassword1] = useState("");
@@ -31,9 +28,6 @@ function SignUp() {
 
   let handleSubmit = async (event) => {
     event.preventDefault();
-
-    console.log(firstname);
-    console.log(userName);
 
     if (userName.length === 0) {
       setAlertMsg(["Enter a user name!", "danger"]);
@@ -60,11 +54,15 @@ function SignUp() {
         "Password too short- Should be minimun 6 characters",
         "danger",
       ]);
+      setPassword1("");
+      setPassword2("");
       return;
     }
 
     if (password1 !== password2) {
       setAlertMsg(["Password didn't match.", "danger"]);
+      setPassword1("");
+      setPassword2("");
       return;
     }
 
@@ -82,6 +80,10 @@ function SignUp() {
       .then((resp) => resp.json())
       .then((resp) => {
         setAlertMsg([resp["msg"], resp["variant"]]);
+        setUserName("");
+        setFirstname("");
+        setPassword1("");
+        setPassword2("");
       })
       .catch((e) => console.log(e));
   };

@@ -238,7 +238,7 @@ def test_filteredNotes(client):
 
     for i in range(15):    
         tags = random.sample(resp.json['tags'], random.randint(1, t))
-        print(tags) 
+        # print(tags) 
         
         resp = client.post('/api/get-filtered-notes', data = json.dumps({'tags':tags}), headers = header)
         assert resp.status_code == 200

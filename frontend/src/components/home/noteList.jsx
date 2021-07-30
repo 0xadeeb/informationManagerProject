@@ -34,13 +34,10 @@ function Home() {
         .then((resp) => resp.json())
         .then((r) => {
           setData(r);
-          console.log(r);
         })
         .catch((error) => console.log(error));
     }
   }, [token]);
-
-  // console.log(data);
 
   function closeModal() {
     setModal(false);
@@ -82,7 +79,6 @@ function Home() {
       .then((resp) => resp.json())
       .then((resp) => {
         setNoteInfo(resp);
-        console.log(resp);
       })
       .catch((error) => console.log(error));
   };
@@ -106,7 +102,6 @@ function Home() {
         .then((resp) => resp.json())
         .then((r) => {
           setData(r);
-          console.log(r);
         })
         .catch((error) => console.log(error));
     }
@@ -120,7 +115,6 @@ function Home() {
 
   const rowData = {
     onClick: (e, row) => {
-      console.log(row);
       fetchNotesInfo(row.noteId);
       setInfoModal(true);
     },

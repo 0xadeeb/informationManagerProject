@@ -24,7 +24,6 @@ function Login() {
   let handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(userName, pswrd);
     let data = {
       userName: userName,
       pass: pswrd,
@@ -42,6 +41,8 @@ function Login() {
           sessionStorage.setItem("token", resp.accessToken);
           setToken(resp.accessToken);
         }
+        setPassword("");
+        if (resp.msg == "Invalid username!") setUserName("");
         setAlertMsg([resp.msg, resp.variant]);
       })
       .catch((e) => console.log(e));

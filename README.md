@@ -1,6 +1,6 @@
 # Introduction
 
-This is a demo notes app which uses python flask in the back-end and react.js in the front-end.
+This is an information manager app which uses python flask for the back-end and react.js for the front-end.
 
 # Running the application
 
@@ -44,7 +44,7 @@ export DATABASE_URL=testUserNotes
 
 1. After starting the back end, from `frontend` directory of the project run `npm-install` to install the required packages.
 
-2. Set up environment variables by running ` export REACT_APP_API_SERVER=http://127.0.0.1:5000`.
+2. Set up environment variables by running `export REACT_APP_API_SERVER=http://127.0.0.1:5000`.
 
 3. Run `npm start` to run the app.
 

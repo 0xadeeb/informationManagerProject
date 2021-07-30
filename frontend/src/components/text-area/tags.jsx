@@ -10,7 +10,6 @@ function TagsInput(props) {
   const addTags = (event) => {
     const newTag = event.target.value.trim().toLowerCase();
     if (newTag !== "") {
-      console.log(newTag);
       setTags([...tags, newTag]);
       props.selectedTags([...tags, newTag]);
       event.target.value = "";
