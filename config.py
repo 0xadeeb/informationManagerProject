@@ -1,10 +1,12 @@
+import os
+
 class Config(object):
     DEBUG = False
     TESTING = False
     SECRET_KEY = '(:guessTheKey:)'
     JWT_SECRET_KEY = '(:guessTheKey_JWTVersion:)'
 
-    DB_NAME = "userNotes"
+    DB_NAME = os.environ['DATABASE_URL']
     SESSION_TYPE = 'filesystem'
     JWT_ACCESS_TOKEN_EXPIRES = False
 

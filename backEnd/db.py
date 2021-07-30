@@ -55,11 +55,11 @@ def insert(d, opt, user):
         cur.execute("SELECT id FROM notes WHERE note = %s",(notes,))
         noteId = cur.fetchone()[0]
         if opt == 2:
-            t = [ item for item in d if item != 'note' and item != 'title']
+            t = [ item.lower() for item in d if item != 'note' and item != 'title']
         elif opt == 3:
-            t = d.get('tags')
+            t = [tg.lower() for tg in d.get('tags')]
         
-        for item in t:
+        for item in list(set(t)):
             needToAdd = True
             for tag in tags:
                 if tag[1] == item:
@@ -69,7 +69,7 @@ def insert(d, opt, user):
 
             if needToAdd:
                 cur.execute("INSERT INTO tags (tag) VALUES (%s)", (item,))
-                cur.execute("INSERT INTO notetags (note, tag) VALUES (%s,(SELECT id FROM tags where tag = %s))",(noteId,item.lower()))
+                cur.execute("INSERT INTO notetags (note, tag) VALUES (%s,(SELECT id FROM tags where tag = %s))",(noteId,item))
             
 
         db.commit()   
@@ -117,16 +117,16 @@ def updateNote(newTitle, newNote, star, id, t = []):
     cur.execute("DELETE FROM notetags WHERE note = %s", (int(id),))
     cur.execute("SELECT * FROM tags")
     tags = cur.fetchall()
-    for item in t:
-            needToAdd = True
-            for tag in tags:
-                if tag[1] == item:
-                    cur.execute("INSERT INTO notetags (note, tag) VALUES (%s,%s)",(int(id),tag[0]))
-                    needToAdd = False
-                    break
+    for item in list(set(t)):
+        needToAdd = True
+        for tag in tags:
+            if tag[1] == item:
+                cur.execute("INSERT INTO notetags (note, tag) VALUES (%s,%s)",(int(id),tag[0]))
+                needToAdd = False
+                break
 
-            if needToAdd:
-                cur.execute("INSERT INTO tags (tag) VALUES (%s)", (item,))
+        if needToAdd:
+                cur.execute("INSERT INTO tags (tag) VALUES (%s)", (item.lower(),))
                 cur.execute("INSERT INTO notetags (note, tag) VALUES (%s,(SELECT id FROM tags where tag = %s))",(int(id),item.lower()))
     
 

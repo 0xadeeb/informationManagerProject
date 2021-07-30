@@ -1,70 +1,55 @@
-# Getting Started with Create React App
+# Introduction
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a demo notes app which uses python flask in the back-end and react.js in the front-end.
 
-## Available Scripts
+# Running the application
 
-In the project directory, you can run:
+## Setting up the back-end
 
-### `npm start`
+1. Create a postgres database with the name `userNotes` by running `createdb userNotes` in the command line.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+2. From root directory of the project set up environment variables by running these 3 commands.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```bash
+export FLASK_APP=backEnd
+export FLASK_ENV=development
+export DATABASE_URL=userNotes
+```
 
-### `npm test`
+3. Install dependencies using `pip install -r requirements.txt`.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+4. Run `flask initdb` to create the initial database.
 
-### `npm run build`
+5. Run `flask run` to run the front-end application.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### For testing the back-end
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Create a postgres database with the name `testUserNotes` by running `createdb testUserNotes` in the command line.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. From `testing` directory of the project set up environment variables by running these 3 commands.
 
-### `npm run eject`
+```bash
+export FLASK_APP=backEnd
+export FLASK_ENV=testing
+export DATABASE_URL=testUserNotes
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+3. Install dependencies using `pip install -r requirements.txt`.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+4. Run `flask initdb` to create the initial database from root directory.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+5. Run `pytest` to run the tests and then run `flask initdb` from root directory.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Setting up the front-end
 
-## Learn More
+1. After starting the back end, from `frontend` directory of the project run `npm-install` to install the required packages.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+2. Set up environment variables by running ` export REACT_APP_API_SERVER=http://127.0.0.1:5000`.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+3. Run `npm start` to run the app.
 
-### Code Splitting
+# Contributing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Please make sure to update tests as appropriate.

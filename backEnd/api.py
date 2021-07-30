@@ -58,7 +58,7 @@ def getNoteData():
 def editData():
 
     data = json.loads(request.data)
-    db.updateNote(data['title'],data['note'],False,data['id'], data['tags'])
+    db.updateNote(data['title'],data['note'],False,data['id'], [t.lower() for t in data['tags']])
 
     return jsonify(dict(msg = "Note Added" )), 200
 
@@ -96,7 +96,6 @@ def getFilteredNotes():
     cur = dbase.cursor()
     cur.execute(query, var)
     filteredNotes = cur.fetchall()
-    print(filteredNotes)
     colNames = ['Sno', 'noteId', 'Title', 'Stared']
 
     for i in range(len(filteredNotes)):

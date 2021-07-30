@@ -5,3 +5,5 @@ psycopg2==2.8.6
 Flask==2.0.1
 Flask_Login==0.5.0
 Werkzeug==2.0.1
+pytest==6.2.4
+faker==8.10.3
