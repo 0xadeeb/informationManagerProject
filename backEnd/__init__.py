@@ -1,4 +1,4 @@
-from flask import Flask as flsk
+from flask import Flask as flsk, render_template
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
   
