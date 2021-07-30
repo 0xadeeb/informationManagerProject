@@ -60,7 +60,7 @@ function NoteForm(props) {
         .catch((error) => console.error(error));
     }
 
-    window.location.reload(true);
+    props.onHide();
   };
 
   return (
