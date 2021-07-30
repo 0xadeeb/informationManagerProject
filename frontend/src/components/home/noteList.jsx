@@ -27,7 +27,7 @@ function Home() {
       Authorization: `Bearer ${token}`,
     };
 
-    if (token) {
+    if (token && showEditModal == false && showModal == false) {
       fetch(`${process.env.REACT_APP_API_SERVER}/api/getallnotes`, {
         headers: h,
       })
@@ -37,7 +37,7 @@ function Home() {
         })
         .catch((error) => console.log(error));
     }
-  }, [token]);
+  }, [token, showModal, showEditModal]);
 
   function closeModal() {
     setModal(false);
