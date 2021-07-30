@@ -27,7 +27,7 @@ function Home() {
       Authorization: `Bearer ${token}`,
     };
 
-    if (token && setModal == false && setEditModal == false) {
+    if (token && showModal == false && showEditModal == false) {
       fetch(`/api/getallnotes`, {
         headers: h,
       })
