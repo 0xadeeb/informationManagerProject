@@ -48,10 +48,8 @@ def content(nid):
 @login_required
 def edit(nid):
     if request.method == 'POST':
-        # print(request.form)
         updatedNote = request.form.get('notes')
         updatedTitle = request.form.get('title')
-        # print(request.form)
         if request.form.get('Star'):
             star = True
         else:

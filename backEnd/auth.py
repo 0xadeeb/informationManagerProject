@@ -96,11 +96,7 @@ def insertToDb(r):
 @auth.route('/login', methods = ['GET','POST'])
 def login():
     if(request.method == 'POST'):
-        # print('hi')
-        # print(request.headers)
-        # print(request.headers.get('Accepts'))
-        # print(request.accept_mimetypes.best)
-
+        
         if (request.headers.get('Accepts')):
             data = json.loads(request.data)
             userId = data['userName']
