@@ -10,9 +10,6 @@ def create_app():
     CORS(app)
     jwt = JWTManager(app)
 
-    from . import notes
-    app.register_blueprint(notes.notes)
-
     from . import auth
     app.register_blueprint(auth.auth)
 
