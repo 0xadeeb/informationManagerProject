@@ -28,7 +28,7 @@ function Home() {
     };
 
     if (token) {
-      fetch(`${process.env.REACT_APP_API_SERVER}/api/getallnotes`, {
+      fetch(`/api/getallnotes`, {
         headers: h,
       })
         .then((resp) => resp.json())
@@ -74,7 +74,7 @@ function Home() {
         Authorization: `Bearer ${token}`,
       };
 
-    fetch(`${process.env.REACT_APP_API_SERVER}/api/get-notes-info`, {
+    fetch(`/api/get-notes-info`, {
       headers: h,
       method: "POST",
       body: JSON.stringify(data),
@@ -96,7 +96,7 @@ function Home() {
     };
 
     if (token) {
-      fetch(`${process.env.REACT_APP_API_SERVER}/api/get-filtered-notes`, {
+      fetch(`/api/get-filtered-notes`, {
         headers: h,
         method: "POST",
         body: JSON.stringify({

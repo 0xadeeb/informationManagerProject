@@ -74,7 +74,7 @@ function SignUp() {
       password1: password1,
     };
 
-    await fetch(`${process.env.REACT_APP_API_SERVER}/signup`, {
+    await fetch(`/signup`, {
       headers: new Headers({ Accepts: "application/json" }),
       method: "POST",
       body: JSON.stringify(data),

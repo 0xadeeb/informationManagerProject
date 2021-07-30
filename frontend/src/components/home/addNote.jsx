@@ -48,7 +48,7 @@ function NoteForm(props) {
     };
 
     if (token) {
-      fetch(`${process.env.REACT_APP_API_SERVER}/api/${props.method}-note`, {
+      fetch(`/api/${props.method}-note`, {
         headers: h,
         method: "POST",
         body: JSON.stringify(data),

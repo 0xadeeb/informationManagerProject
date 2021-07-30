@@ -12,7 +12,7 @@ function NoteInfo(props) {
         Authorization: `Bearer ${token}`,
       };
 
-    fetch(`${process.env.REACT_APP_API_SERVER}/api/delete-note`, {
+    fetch(`/api/delete-note`, {
       headers: h,
       method: "POST",
       body: JSON.stringify(data),

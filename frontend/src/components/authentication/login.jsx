@@ -30,7 +30,7 @@ function Login() {
       pass: pswrd,
     };
 
-    await fetch(`${process.env.REACT_APP_API_SERVER}/login`, {
+    await fetch(`/login`, {
       headers: new Headers({ Accepts: "application/json" }),
       method: "POST",
       body: JSON.stringify(data),
