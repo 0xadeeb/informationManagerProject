@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
 import { useToken } from "../../stores/context";
 import { Alert } from "react-bootstrap";
 import Password from "../text-area/password";
@@ -97,7 +98,9 @@ function SignUp() {
       .catch((e) => console.log(e));
   };
 
-  return (
+  return token && token != undefined && token.length >= 10 ? (
+    <Redirect to="/" />
+  ) : (
     <div className="customBG">
       {alertMsg ? (
         <Alert
