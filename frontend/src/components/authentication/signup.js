@@ -1,17 +1,16 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router";
-import { Alert, Button } from "react-bootstrap";
+import { useToken } from "../../stores/context";
+import { Alert } from "react-bootstrap";
 import Password from "../text-area/password";
 import SmallTextBox from "../text-area/smallTextBox";
 
 function SignUp() {
-  let histroy = useHistory();
-
   const [userName, setUserName] = useState("");
   const [firstname, setFirstname] = useState("");
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
   const [alertMsg, setAlertMsg] = useState(null);
+  const [token, setToken] = useToken();
 
   function updateUserName(event) {
     setUserName(event.target.value);
@@ -90,6 +89,10 @@ function SignUp() {
         setFirstname("");
         setPassword1("");
         setPassword2("");
+        if (resp.accessToken) {
+          sessionStorage.setItem("token", resp.accessToken);
+          setToken(resp.accessToken);
+        }
       })
       .catch((e) => console.log(e));
   };

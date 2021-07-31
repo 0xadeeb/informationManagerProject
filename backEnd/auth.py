@@ -10,41 +10,6 @@ import functools
 
 auth = Blueprint('auth', 'backEnd', url_prefix= '/')
 
-
-# def login_required(view):
-    
-#     @functools.wraps(view)
-#     def wrapped_view(**kwargs):
-#         if g.user is None:
-#             return redirect(url_for("auth.login"))
-
-#         return view(**kwargs)
-
-#     return wrapped_view
-
-
-# @auth.before_app_request
-# def load_logged_in_user():
-    
-#     user_id = session.get("user_id")
-
-#     if user_id is None:
-#         g.user = None
-#     else:
-#         dbase = db.getDb()
-#         cur = dbase.cursor()
-#         cur.execute("SELECT * FROM users WHERE id = %s", (user_id,))
-#         t = cur.fetchone()
-#         user = User()
-#         user.id = t[0]
-#         user.username = t[1]
-#         user.name = t[2]
-#         user.password = t[3]
-#         user.is_authenticated = True
-#         g.user = user
-        
-        
-
 def insertToDb(r):
 
     
@@ -52,8 +17,9 @@ def insertToDb(r):
     userName = d['userName']
 
     if db.uniqueId(userName):
-        db.insert(d, 1, None)
-        return jsonify(dict(variant = 'success', msg = "New account created."))
+        id = db.insert(d, 1, None)
+        access_token = create_access_token(t[0])
+        return jsonify(dict(variant = 'success', msg = "New account created.", accessToken = access_token, userId = t[0]))
     else:
         return jsonify(dict(variant = 'danger', msg = "Sorry User Name not available, Pick a new User Name"))
     
@@ -78,7 +44,6 @@ def login():
             
             
         elif check_password_hash(hashedPass, pswrd):
-            flash('Logged in successfully!', category='success')
             session["user_id"] = t[0]
 
             access_token = create_access_token(t[0])
@@ -95,11 +60,6 @@ def signup():
     if request.method == 'POST':
         d = insertToDb(request)
         return d
+    else:
+         return jsonify(dict(variant = 'danger', msg = "Sorry User Name not available, Pick a new User Name"))
 
-
-
-# @auth.route('/logout')
-# @login_required
-# def logout():
-#     session.clear()
-#     return redirect(url_for('auth.login'))

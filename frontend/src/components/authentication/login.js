@@ -37,7 +37,6 @@ function Login() {
     })
       .then((resp) => resp.json())
       .then((resp) => {
-        console.log(resp);
         if (resp.accessToken) {
           sessionStorage.setItem("token", resp.accessToken);
           setToken(resp.accessToken);
