@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
+import { useToken } from "../../stores/context";
 import { Alert } from "react-bootstrap";
 import Password from "../text-area/password";
 import SmallTextBox from "../text-area/smallTextBox";
@@ -9,6 +11,7 @@ function SignUp() {
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
   const [alertMsg, setAlertMsg] = useState(null);
+  const [token, setToken] = useToken();
 
   function updateUserName(event) {
     setUserName(event.target.value);
@@ -84,11 +87,17 @@ function SignUp() {
         setFirstname("");
         setPassword1("");
         setPassword2("");
+        if (resp.accessToken) {
+          sessionStorage.setItem("token", resp.accessToken);
+          setToken(resp.accessToken);
+        }
       })
       .catch((e) => console.log(e));
   };
 
-  return (
+  return token && token != undefined && token.length >= 10 ? (
+    <Redirect to="/" />
+  ) : (
     <div className="customBG">
       {alertMsg ? (
         <Alert

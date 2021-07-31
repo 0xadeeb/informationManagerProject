@@ -52,8 +52,9 @@ def insertToDb(r):
         userName = d['userName']
 
         if db.uniqueId(userName):
-            db.insert(d, 1, None)
-            return jsonify(dict(variant = 'success', msg = "New account created."))
+            t = db.insert(d, 1, None)
+            access_token = create_access_token(t[0])
+            return jsonify(dict(variant = 'success', msg = "New account created.", accessToken = access_token, userId = t[0]))
         else:
             return jsonify(dict(variant = 'danger', msg = "Sorry User Name not available, Pick a new User Name"))
 

@@ -45,6 +45,8 @@ def insert(d, opt, user):
 
         cur.execute("INSERT INTO users (username, name, password) VALUES (%s,%s,%s) ", (userId, name, hashedPass[7:]))
         db.commit()
+        cur.execute("SELECT id FROM users WHERE username = %s", (userId,))
+        return cur.fetchone()
     
     else:
         notes = d.get('note')
